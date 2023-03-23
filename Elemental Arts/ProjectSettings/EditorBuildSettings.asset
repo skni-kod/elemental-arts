@@ -4,7 +4,19 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 86b8566f2c6bedc4aaa12df85202096c
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 4ff92587463d29a4591e14654ded698f
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 9970eb751e607964381be2ff7690a4d6
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c0d79d0fd622be34594f74398921a1e7, type: 2}
     xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 8bba64c0695855447b268e759f9a291e, type: 2}
