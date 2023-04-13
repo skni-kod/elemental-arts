@@ -5,16 +5,25 @@ using TMPro;
 
 public class Ui : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI hp;
-    [SerializeField] private TextMeshProUGUI exp;
-    void Start()
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private TextMeshProUGUI expText;
+
+    public int hp = 100;
+    public int exp = 0;
+
+    private void Start()
     {
-        
+        UpdateHp();
+        UpdateExp();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateHp()
     {
-        
+        hpText.text = hp.ToString();
+    }
+
+    public void UpdateExp()
+    {
+        expText.text = exp.ToString();
     }
 }
