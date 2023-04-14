@@ -8,18 +8,25 @@ public class TempEnemy : MonoBehaviour
     [SerializeField] private GameObject dmgPanel;
     [SerializeField] private float panelDuration = 1f;
     [SerializeField] private int damage = 2;
+    [SerializeField] private int health = 100;
 
     private void OnCollisionEnter(Collision collision)
     {
-        //GameObject dmgText = Instantiate(dmgPanel, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(1f, 1.5f), 0f), Quaternion.identity, transform);
         GameObject dmgText = Instantiate(dmgPanel, transform.position, Quaternion.identity, transform);
         dmgText.GetComponentInChildren<TextMeshProUGUI>().text = damage.ToString();
         dmgText.transform.rotation = Quaternion.LookRotation(dmgText.transform.position - Camera.main.transform.position);
         IEnumerator panelMove = PanelMove(dmgText);
         IEnumerator panelLook = PanelLook(dmgText);
-        Debug.Log("XD");
         StartCoroutine(panelMove);
         StartCoroutine(panelLook);
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            health -= 10;
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
     }
 
     IEnumerator PanelLook(GameObject obj)
@@ -47,6 +54,10 @@ public class TempEnemy : MonoBehaviour
             counter += Time.deltaTime;
             yield return null;
         }
+    }
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
 

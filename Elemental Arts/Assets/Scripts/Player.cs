@@ -5,19 +5,20 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Ui ui;
-    private int hp;
+    public int hp = 100;
+    public int exp = 0;
 
-    void Start()
+    private void Start()
     {
-        //ui = GetComponentInParent<Ui>();
+        if (PlayerPrefs.HasKey("hp"))
+            hp = PlayerPrefs.GetInt("hp");
+        if (PlayerPrefs.HasKey("exp"))
+            exp = PlayerPrefs.GetInt("exp");
     }
-    void Update()
-    {
-        
-    }
+
     private void OnTriggerEnter(Collider other)
     {
-        ui.hp -= 10;
-        ui.UpdateHp();
+        hp -= 10;
+        ui.UpdateHp(hp);
     }
 }

@@ -8,21 +8,18 @@ public class Ui : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private TextMeshProUGUI expText;
 
-    public int hp = 100;
-    public int exp = 0;
-
     private void Start()
     {
-        UpdateHp();
-        UpdateExp();
+        UpdateHp(PlayerPrefs.HasKey("hp") ? PlayerPrefs.GetInt("hp") : 100);
+        UpdateExp(PlayerPrefs.HasKey("exp") ? PlayerPrefs.GetInt("exp") : 0);
     }
 
-    public void UpdateHp()
+    public void UpdateHp(int hp)
     {
         hpText.text = hp.ToString();
     }
 
-    public void UpdateExp()
+    public void UpdateExp(int exp)
     {
         expText.text = exp.ToString();
     }
