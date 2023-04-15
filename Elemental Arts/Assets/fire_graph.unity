@@ -190,6 +190,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0d62d0295aa12ab4ba04e950d03ef05e, type: 2}
+    - target: {fileID: 4228765106141687288, guid: bcd56700d872b284e95767f4f00690ac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4837749881544161873, guid: bcd56700d872b284e95767f4f00690ac, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -10115,7 +10119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!73398921 &1591813179
 VFXRenderer:
   serializedVersion: 1
@@ -10124,7 +10128,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591813178}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
