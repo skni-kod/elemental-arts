@@ -9,8 +9,12 @@ using System.Linq;
 
 public class Recognizer : MonoBehaviour
 {
+    public InputActionReference triggerAction;
+    public GameObject fireballPrefab;
+
     XRDeviceSimulatorControls controls;
     List<Vector3> positionsList = new List<Vector3>(); //lista pozycji dla gestu
+
     public Transform movementSource;
     public GameObject debugCube; 
     public bool creationMode = true;
@@ -20,6 +24,11 @@ public class Recognizer : MonoBehaviour
     private bool trigger = false;
     public float newPositionThresholdDistance = 0.05f;
 
+    private void Awake()
+    {
+        controls = new XRDeviceSimulatorControls();
+    }
+    
     private void Start()
     {
         string[] gestureFiles = Directory.GetFiles(Application.persistentDataPath, "*xml");
@@ -27,14 +36,35 @@ public class Recognizer : MonoBehaviour
         {
             trainigSet.Add(GestureIO.ReadGestureFromFile(item));
         }
+
     }
-    private void Awake()
+
+    void Update()
     {
-        controls = new XRDeviceSimulatorControls();
+        float triggerValue = triggerAction.action.ReadValue<float>();
+        if (triggerValue > 0.5f) trigger = true;
+        else trigger = false;
+        
+        //Zaczï¿½cie ruchu
+        if (!isMoving && trigger)
+        {
+            StartMovement();
+        }
+        //Zakoï¿½czenie ruchu
+        else if(isMoving && !trigger)
+        {
+            EndMovement();
+        }
+        //Aktualizacja ruchu
+        else if(isMoving && trigger)
+        {
+            UpdateMovement();
+        }
     }
 
     private void OnEnable()
     {
+        // Code for devicesimulator
         controls.InputControls.Trigger.performed += doTrigger;
         controls.InputControls.Trigger.canceled += dontTrigger;
         controls.InputControls.Trigger.Enable();
@@ -53,24 +83,6 @@ public class Recognizer : MonoBehaviour
     private void OnDisable()
     {
         controls.InputControls.Trigger.Disable();
-    }
-    void Update()
-    {
-        //Zaczêcie ruchu
-        if (!isMoving && trigger)
-        {
-            StartMovement();
-        }
-        //Zakoñczenie ruchu
-        else if(isMoving && !trigger)
-        {
-            EndMovement();
-        }
-        //Aktualizacja ruchu
-        else if(isMoving && trigger)
-        {
-            UpdateMovement();
-        }
     }
 
     void StartMovement()
@@ -110,12 +122,18 @@ public class Recognizer : MonoBehaviour
         {
             foreach(var item in gesture.Points)
             {
-                Debug.Log(item);
+                //Debug.Log(item);
             }
             if(!gesture.Points.Contains(null))
             {
                 Result result = PointCloudRecognizer.Classify(gesture, trainigSet.ToArray());
                 Debug.Log(result.GestureClass + " " + result.Score);
+                if (result.Score > 0.75f)
+                {
+                    Vector3 dir = (positionsList.First() - positionsList.Last()).normalized;
+                    GameObject fireball = Instantiate(fireballPrefab, movementSource.transform.position, Quaternion.Euler(dir));
+                    fireball.GetComponent<Rigidbody>().AddForce(movementSource.transform.forward * 10.0f, ForceMode.Impulse);
+                }
             }
         }
     }
@@ -125,7 +143,7 @@ public class Recognizer : MonoBehaviour
         Vector3 lastPosition = positionsList[positionsList.Count - 1];
         if(Vector3.Distance(movementSource.position, lastPosition) > newPositionThresholdDistance)
         {
-            //dodawanie œcie¿ki gestu
+            //dodawanie ï¿½cieï¿½ki gestu
             positionsList.Add(movementSource.position);
             //cube dla wizualizacji
             if (debugCube)
